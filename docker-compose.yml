@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: ./backend
+    container_name: yggdrasil_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: qwen3
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build: ./frontend
+    container_name: yggdrasil_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
